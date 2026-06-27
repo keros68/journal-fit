@@ -49,6 +49,8 @@ For Author Guidelines, prefer sources in this order:
 
 If automatic retrieval is needed, read `references/guidelines-fallback-matrix.md` for tested retrieval patterns and failure modes. Use `TAVILY_API_KEY` only when it is already available in the environment; otherwise skip Tavily-specific layers without blocking the task.
 
+If `TAVILY_API_KEY` is absent and the official or reader page returns only a security check, cookie page, empty page, or navigation fragment, do not stop immediately. Try available web search for official mirrors, publisher help pages, or third-party guideline summaries. If those are still weak, ask the user to paste the guideline text.
+
 Extract only requirements supported by the retrieved text:
 
 | Area | Look For |
@@ -84,6 +86,7 @@ Select exemplars from the same journal and similar topic. Avoid high-citation bu
 - Prefer recent research articles, commonly the last 5-6 years unless the field needs a different window.
 - Aim for 8-12 usable exemplars. Fewer than 5 means low confidence.
 - Use OpenAlex for discovery, Semantic Scholar for abstracts when available, CrossRef/OpenAlex for metadata, and Europe PMC or publisher OA pages for full text when needed.
+- For abstracts, try Semantic Scholar first, then reconstruct OpenAlex `abstract_inverted_index` when present, then use a clean CrossRef abstract if available. Exclude no-abstract papers from abstract-length or language statistics and report the usable count.
 
 Summarize benchmarks with median and IQR. Do not rely on mean plus standard deviation for small, skewed samples.
 
@@ -94,6 +97,8 @@ For language-style checks, require enough full text to support the claim. If few
 ### Format Compliance
 
 Only produce hard compliance findings when the requirement came from real guideline text.
+
+Treat official guideline text and user-pasted official text as eligible for confirmed P0 findings. Treat third-party aggregators and search snippets as fallback evidence only: label them clearly, use them for tentative direction, and mark the item Unknown or "needs official verification" before submission.
 
 | Status | Meaning |
 |---|---|
@@ -144,6 +149,8 @@ Do not include replacement sentences or rewritten paragraphs. If the user asks f
 ## Common Pitfalls
 
 - Do not infer STOTEN, Wiley, ACS, Springer, or Taylor & Francis requirements from publisher-wide defaults.
+- Do not use OpenAlex as an Author Guidelines search engine. Use it for journal identity, article metadata, and same-journal exemplar discovery.
+- Do not treat security-check, cookie-consent, or near-empty reader output as guideline text. Wiley and Taylor & Francis pages often fail this way without Tavily or browser access.
 - Do not call a generic journal-information or LetPub-style skill unless it is installed and clearly relevant. If unavailable, skip nonessential metadata and continue with official or public sources.
 - Do not treat Tavily coverage or third-party aggregator coverage as guaranteed. Use the matrix as a dated test snapshot, not a current fact.
 - Do not use CrossRef `page` fields to estimate Elsevier article length; those fields may be article numbers.

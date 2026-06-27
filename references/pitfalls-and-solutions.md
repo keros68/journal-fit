@@ -117,3 +117,32 @@ curl -s "https://api.semanticscholar.org/graph/v1/paper/DOI:{DOI}?fields=title,a
 这意味着上一轮模拟测试报告中的 P0/P1 建议有方向性错误。**没有真实 Guidelines 的格式检查不仅无用，而且有害——会产生误导性建议。**
 
 当前 skill 应在 Guidelines Checklist 部分坚持"禁止猜测"规则，并保留这些反例作为检查红线。
+
+## 9. 无 Tavily 时的高难度非 OA 出版商压力测试（2026-06-27）
+
+本轮专门避开 Elsevier，测试 Wiley、ACS、Taylor & Francis 和 Nature/Springer 这类更容易暴露问题的期刊页面。测试环境中 `TAVILY_API_KEY` 未配置。
+
+**Guidelines 抓取结果：**
+
+| 期刊 | 出版商 | 官方页 + Jina/reader 结果 | 处理规则 |
+|------|--------|--------------------------|----------|
+| Global Change Biology | Wiley | 只返回 security verification | 不要当作指南正文；改用 web search/第三方摘要，或让用户粘贴 |
+| Environmental Science & Technology | ACS | 只拿到入口页和 Author Guidelines 链接，正文不完整 | 继续追踪 ACS Author Guidelines 链接；证据不足时标为 Unknown |
+| Arid Land Research and Management | Taylor & Francis | 近似 cookie/空页 | 不要当作指南正文；优先 search/第三方摘要 |
+| Nature Climate Change | Springer Nature | 可拿到 submission guidelines 片段，但内容偏稀疏 | 只抽取明确出现的要求；缺失项不要猜 |
+
+**同刊范文检索结果：**
+
+| 期刊 | OpenAlex 同刊同主题 | Semantic Scholar 摘要 | 结论 |
+|------|---------------------|------------------------|------|
+| Global Change Biology | 364 条 | 首篇摘要 1720 chars | 可做摘要/参考文献风格对标 |
+| Environmental Science & Technology | 36 条 | 首篇摘要 1325 chars | 可做同主题对标 |
+| Arid Land Research and Management | 2 条 | 摘要可取，但样本太少 | 少于 5 篇，必须标低置信度 |
+| Nature Climate Change | 41 条 | 首篇无摘要 | 需回退 OpenAlex abstract_inverted_index；仍无摘要则排除该篇 |
+
+**新增规则：**
+
+- 没有 Tavily 不等于立刻停止。先尝试官方镜像、publisher help page、web search 和第三方 guideline summary。
+- 第三方页面、搜索摘要和聚合站只能作为 fallback evidence；不能生成完全确认的 P0。
+- OpenAlex 不适合找 Author Guidelines。它适合确认期刊身份、ISSN 和检索同刊范文。
+- 无摘要论文不能混入摘要长度/语言风格统计；必须报告可用样本数。
