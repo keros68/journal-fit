@@ -15,7 +15,7 @@ AI agent 投稿前期刊适配检查 skill：按目标期刊 Author Guidelines �
 export TAVILY_API_KEY="YOUR_API_KEY"
 ```
 
-不要把 API key 写进仓库。没有 key 时，skill 会降级使用公开页面、reader/search 结果或用户粘贴的指南内容。
+不要把 API key 写进仓库。没有 key 时，skill 会优先尝试公开页面、reader/search 结果和第三方摘要；只有证据不足时才请求用户粘贴官方指南片段。
 
 ## 适用场景
 
@@ -26,9 +26,12 @@ export TAVILY_API_KEY="YOUR_API_KEY"
 
 ## 它做什么
 
+> 它不是“帮你改论文”的工具，而是“帮你确认该往哪里改”的工具。小白用户不需要先理解检查类型；如果请求模糊，skill 会先按快速检查跑，再根据结果建议是否升级到完整投稿前检查或深度对标。
+
 - 抽取真实 Author Guidelines 中的字数、摘要、关键词、图表、参考文献和声明要求。
 - 解析 `.docx`、`.pdf`、`.md` 或 `.txt` 草稿中的相关特征。
 - 用同刊同主题范文对比摘要长度、参考文献数量、章节篇幅等软性惯例。
+- 默认从“快速检查”开始，优先找会导致投稿系统卡住或编辑部退回的硬性问题。
 - 输出 `P0 必须修改`、`P1 建议修改`、`P2 可选优化`、`已达标` 和 `无法评估`。
 
 ## 不做什么
@@ -40,7 +43,9 @@ export TAVILY_API_KEY="YOUR_API_KEY"
 ## 工作流程
 
 ```text
-目标期刊 + 草稿 + 检查范围
+目标期刊 + 草稿
+  ↓
+默认快速检查（不强迫小白选择复杂范围）
   ↓
 获取 Author Guidelines
   ↓

@@ -19,7 +19,7 @@
 
 ```bash
 curl -s -X POST "https://api.tavily.com/extract" \
-  -H "Authorization: Bearer $TAVILY_API_KEY" \
+  --oauth2-bearer "$TAVILY_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"urls":["{url}"], "extract_depth":"advanced", "timeout":60}'
 ```
@@ -48,13 +48,14 @@ curl -s "https://r.jina.ai/{url}"
 ```bash
 # Step 1: search 找到关键信息 + 第三方 URL
 curl -s -X POST "https://api.tavily.com/search" \
-  -H "Authorization: Bearer $TAVILY_API_KEY" \
+  --oauth2-bearer "$TAVILY_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"query":"{期刊名} author guidelines word limit abstract figures", "search_depth":"advanced", "include_answer":true}'
 
 # Step 2: extract 第三方页面拿全文
 curl -s -X POST "https://api.tavily.com/extract" \
-  -H "Authorization: Bearer $TAVILY_API_KEY" \
+  --oauth2-bearer "$TAVILY_API_KEY" \
+  -H "Content-Type: application/json" \
   -d '{"urls":["{manusights_url}"], "extract_depth":"advanced"}'
 ```
 

@@ -16,23 +16,62 @@ Diagnose whether a manuscript fits a target journal's requirements and conventio
 - Keep outputs diagnostic: issue, evidence, risk, and revision direction.
 - If the user writes in Chinese, answer in Chinese unless they request another language.
 
-## Start Here
+## Start Here — Default To Quick Check
 
-Collect the minimum missing information:
+Most users do not know which diagnostic scope they need. Do not force them to choose technical categories before they understand the problem. If the request is vague, default to **Quick Check** and proceed.
+
+Vague requests include:
+
+- “帮我看看这篇能不能投这个期刊”
+- “投稿前帮我检查一下”
+- “看看哪里需要改”
+- “Check this against Journal X”
+
+Collect only the minimum missing inputs:
 
 1. Target journal name or ISSN.
 2. Manuscript draft path or pasted text. Supported inputs are `.docx`, `.pdf`, `.md`, and `.txt`.
-3. Diagnostic scope:
 
-| Choice | Scope | Run |
+If both are available, do not ask the user to choose A/B/C/D/E. State the default and run:
+
+> I will start with Quick Check: confirmed Author Guidelines requirements, abstract/keywords, required submission items, obvious missing statements, and clear format risks. I will not rewrite, polish, or run expensive deep benchmarking unless needed.
+
+Ask at most one scope question when the user appears to want something beyond Quick Check:
+
+> Do you want a quick check, a full pre-submission check, or a section-specific check? If unsure, I will start with Quick Check.
+
+### Internal Scope Mapping
+
+Use this mapping internally. Do not dump the table on novice users unless helpful.
+
+| User concern | Internal scope | Run |
 |---|---|---|
-| A | Format compliance | Author Guidelines checklist only |
-| B | Style alignment | Same-journal, same-topic benchmark |
-| C | Language style | OA full-text language features |
-| D | Section-specific fit | One named section compared with exemplars |
-| E | Submission readiness | A plus B; add C or D only if requested |
+| “会不会被编辑部/投稿系统退回” | Quick Check / Format compliance | Author Guidelines essentials only |
+| “准备正式投稿前帮我完整把关” | Submission readiness | Format compliance + selected same-journal benchmarks |
+| “像不像这个期刊会收” | Style alignment | Same-journal, same-topic benchmark |
+| “只看摘要/引言/结论” | Section-specific fit | One named section compared with exemplars |
+| “英语表达/语言风格像不像” | Language style | OA full-text language features, only when enough full text exists |
 
-After the user answers, restate the scope and continue. If all three inputs are already available, proceed without another question.
+### Quick Check Defaults
+
+Quick Check includes:
+
+- confirmed Author Guidelines requirements;
+- abstract word limit and structure;
+- keyword count;
+- required submission items such as Highlights, Graphical Abstract, Data Availability, CRediT, ethics/declaration items;
+- reference format only if explicitly required by the journal;
+- obvious missing sections or statements.
+
+Quick Check excludes by default:
+
+- language polishing;
+- replacement prose;
+- full same-journal style benchmarking;
+- OA full-text language analysis;
+- acceptance prediction.
+
+After Quick Check, recommend an upgrade only when useful: full pre-submission check, same-journal benchmark, language-style analysis, or section-specific fit.
 
 ## Evidence Workflow
 
