@@ -17,6 +17,8 @@ export TAVILY_API_KEY="YOUR_API_KEY"
 
 不要把 API key 写进仓库。没有 key 时，skill 会优先尝试公开页面、reader/search 结果和第三方摘要；只有证据不足时才请求用户粘贴官方指南片段。
 
+不需要额外安装网页转 Markdown 的 skill。`journal-fit` 已内置轻量 fallback 思路：优先尝试 Jina Reader、defuddle 等公开 reader，把官方页面转成 Markdown；如果仍然只拿到验证码、cookie 页或空内容，才继续降级到搜索摘要、第三方页面或用户粘贴。
+
 ## 适用场景
 
 - 想按目标期刊要求做投稿前检查。

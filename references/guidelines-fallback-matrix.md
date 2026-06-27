@@ -4,14 +4,14 @@
 
 ## 测试矩阵
 
-| 出版商 | 代表期刊 | Tavily extract | Jina Reader | Tavily search→第三方 | 推荐层 |
+| 出版商 | 代表期刊 | Tavily extract | Markdown reader cascade | Tavily search→第三方 | 推荐层 |
 |--------|---------|---------------|-------------|---------------------|--------|
 | Elsevier | STOTEN, Water Research, JHM | ✅ (83K-108K) | ✅ (62K) | — | Layer 1 |
 | MDPI | Water | ✅ (108K) | ✅ (108K) | — | Layer 1/2 |
 | Springer Nature | Nature Climate Change | ⚠️ (13K 但正文空) | ⚠️ (4K 导航为主) | ✅ (manusights) | Layer 3 |
 | Wiley | Global Change Biology | ❌ (fetch fail) | ❌ (bot check) | ✅ (manusights 33K) | Layer 3 |
 | ACS | ES&T | ❌ (fetch fail) | ❌ (cookie wall) | ✅ (manusights 22K) | Layer 3 |
-| Taylor & Francis | Arid Land Res. & Mgmt. | ❌ (fetch fail) | ❌ (0 chars) | ✅ (scispace 17K) | Layer 3 |
+| Taylor & Francis | Arid Land Res. & Mgmt. | ❌ (fetch fail) | ⚠️ (Jina 波动；复测可拿到 47K 官方说明) | ✅ (scispace 17K) | Layer 2/3 |
 
 ## 各层详细说明
 
@@ -29,19 +29,42 @@ curl -s -X POST "https://api.tavily.com/extract" \
 - Springer Nature: 返回 13K chars 但大部分是导航菜单/Cookie 声明，正文几乎没有
 - Wiley/ACS/T&F: Tavily 返回 `failed_results`（"Failed to fetch url"）
 
-### Layer 2: Jina Reader (r.jina.ai)
+### Layer 2: Built-in Markdown reader cascade（无需额外 skill）
+
+This layer copies only the lightweight URL-to-Markdown idea, not the full `qiaomu-markdown-proxy` dependency stack. Do not require users to install another skill.
+
+Try these in order:
 
 ```bash
 curl -s "https://r.jina.ai/{url}"
 # 可选 header: X-Engine: browser, X-Return-Format: text
 ```
 
-- 免费无需 key
-- 覆盖范围和 Tavily extract 几乎一样
+If Jina returns an error, security page, cookie page, or near-empty output:
+
+```bash
+curl -s "https://defuddle.md/{url}"
+```
+
+If both hosted readers fail and `npx` is already available, try:
+
+```bash
+npx --yes agent-fetch "{url}" --json
+```
+
+- Jina 和 defuddle 免费无需 key
+- `agent-fetch` is optional; never make Node/npm setup a prerequisite for novice users
 - Wiley 返回 "Performing security verification" → bot check 拦截
-- ACS 返回 cookie consent 页面
-- T&F 返回空
-- **价值：Tavily key 耗尽时的免费备选，不是不同覆盖范围的补充**
+- ACS 常只返回入口页或 cookie 页面，需要继续追踪官方 Author Guidelines 链接
+- Taylor & Francis 页面波动明显：曾返回空，也曾通过 Jina 拿到完整官方说明
+- Nature/Springer 往往先返回 hub 页面；需要继续访问官方二级链接，如 initial formatting、preparing your submission
+
+**Content validation before accepting output:**
+
+- Must contain substantial body text, not just title/navigation.
+- Must include guideline signals such as `abstract`, `manuscript`, `word`, `figure`, `reference`, `submission`, or `author guidelines`.
+- Reject pages dominated by `security verification`, `cookie`, `Access Denied`, `404`, login prompts, or generic publisher navigation.
+- If the official page is a hub, follow relevant official subpage links before using third-party summaries.
 
 ### Layer 3: Tavily search → 第三方聚合站
 
@@ -83,7 +106,7 @@ curl -s -X POST "https://api.tavily.com/extract" \
 4. 检查返回内容是否包含正文关键词（abstract/manuscript/word/figure/reference）
    - 有正文 → 提取 Guidelines Checklist，继续
    - 无正文或失败 → 进入 Layer 2
-5. 调 Layer 2 (Jina Reader)
+5. 调 Layer 2 (built-in Markdown reader cascade: Jina → defuddle → optional agent-fetch)
    - 有正文 → 提取，继续
    - 失败 → 进入 Layer 3
 6. 调 Layer 3 (Tavily search → 第三方 extract)
@@ -94,7 +117,7 @@ curl -s -X POST "https://api.tavily.com/extract" \
 ## 覆盖率总结
 
 - Layer 1 单独覆盖率：3/6 出版商（Elsevier, MDPI, 部分 Springer）
-- Layer 1+2 覆盖率：不变（覆盖范围相同）
+- Layer 1+2 覆盖率：优于单一 Jina，但仍会受 publisher 反爬和页面结构影响
 - Layer 1+2+3：在这批样本中覆盖 **6/6 出版商**
 - Layer 4 手动粘贴：理论兜底；这批实测中未使用
 
