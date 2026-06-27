@@ -19,7 +19,7 @@
 
 ```bash
 curl -s -X POST "https://api.tavily.com/extract" \
-  --oauth2-bearer "$TAVILY_API_KEY" \
+  -H "Authorization: Bearer $TAVILY_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"urls":["{url}"], "extract_depth":"advanced", "timeout":60}'
 ```
@@ -48,13 +48,13 @@ curl -s "https://r.jina.ai/{url}"
 ```bash
 # Step 1: search 找到关键信息 + 第三方 URL
 curl -s -X POST "https://api.tavily.com/search" \
-  --oauth2-bearer "$TAVILY_API_KEY" \
+  -H "Authorization: Bearer $TAVILY_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"query":"{期刊名} author guidelines word limit abstract figures", "search_depth":"advanced", "include_answer":true}'
 
 # Step 2: extract 第三方页面拿全文
 curl -s -X POST "https://api.tavily.com/extract" \
-  --oauth2-bearer "$TAVILY_API_KEY" \
+  -H "Authorization: Bearer $TAVILY_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"urls":["{manusights_url}"], "extract_depth":"advanced"}'
 ```
@@ -79,7 +79,7 @@ curl -s -X POST "https://api.tavily.com/extract" \
 ```
 1. 根据 ISSN/刊名判断出版商
 2. 构造官方 Guidelines URL
-3. 调 Layer 1 (Tavily extract)
+3. 调 Layer 1 (Tavily extract；仅在 TAVILY_API_KEY 已配置时)
 4. 检查返回内容是否包含正文关键词（abstract/manuscript/word/figure/reference）
    - 有正文 → 提取 Guidelines Checklist，继续
    - 无正文或失败 → 进入 Layer 2

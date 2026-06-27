@@ -9,7 +9,7 @@ Diagnose whether a manuscript fits a target journal's requirements and conventio
 
 ## Operating Rules
 
-- Ask what to check before running tools. Do not execute the full workflow when the user only needs one diagnostic.
+- For vague requests, default to Quick Check. Ask a scope question only when the user appears to want a deeper, narrower, or non-default diagnostic.
 - Use real journal evidence for hard compliance claims. Do not replace missing Author Guidelines with publisher defaults.
 - Treat third-party guideline aggregators as fallback evidence only. Label the source and tell the user to verify current official requirements before submission.
 - Mark unsupported items as "unable to assess" rather than guessing.
@@ -86,7 +86,7 @@ For Author Guidelines, prefer sources in this order:
 3. Search results or third-party aggregators that summarize guidelines.
 4. User-pasted guideline text.
 
-If automatic retrieval is needed, read `references/guidelines-fallback-matrix.md` for tested retrieval patterns and failure modes. Use `TAVILY_API_KEY` only when it is already available in the environment; otherwise skip Tavily-specific layers without blocking the task.
+If automatic retrieval is needed, read `references/guidelines-fallback-matrix.md` for tested retrieval patterns and failure modes. Use Tavily only when `TAVILY_API_KEY` is already available; if not, try no-key options such as reader services, ordinary search, or user-pasted guideline text. Do not block the task on Tavily configuration.
 
 If `TAVILY_API_KEY` is absent and the official or reader page returns only a security check, cookie page, empty page, or navigation fragment, do not stop immediately. Try available web search for official mirrors, publisher help pages, or third-party guideline summaries. If those are still weak, ask the user to paste the guideline text.
 
@@ -117,7 +117,7 @@ Record counts and locations that support the diagnosis: abstract words, keyword 
 
 ### 3. Same-Journal Benchmarking
 
-Use this only for scope B, C, D, or E.
+Use this only for style alignment, language style, section-specific fit, or full submission readiness. Do not run full benchmarking during Quick Check unless the user explicitly asks for it or the Quick Check reveals a specific need.
 
 Select exemplars from the same journal and similar topic. Avoid high-citation but off-topic papers.
 
@@ -166,7 +166,7 @@ Lead with a concise readiness call, then show evidence. Use this structure:
 
 ## Evidence Base
 - Guidelines: [official / third-party / pasted / unavailable], source date if visible
-- Exemplars: [N] papers, topic filter, data completeness
+- Exemplars: [not run for Quick Check / N papers, topic filter, data completeness]
 - Draft: [file/path or pasted text], parsed fields
 
 ## P0 - Must Fix
