@@ -7,6 +7,16 @@ AI agent 投稿前期刊适配检查 skill：按目标期刊 Author Guidelines �
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Agent Skill](https://img.shields.io/badge/Agent%20Skill-SKILL.md-green.svg)](SKILL.md)
 
+## API 配置（可选但推荐）
+
+基础检查可以零配置运行。若希望提高 Author Guidelines 自动获取成功率，建议在宿主 agent 环境里配置 Tavily：
+
+```bash
+export TAVILY_API_KEY="YOUR_API_KEY"
+```
+
+不要把 API key 写进仓库。没有 key 时，skill 会降级使用公开页面、reader/search 结果或用户粘贴的指南内容。
+
 ## 适用场景
 
 - 想按目标期刊要求做投稿前检查。
