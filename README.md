@@ -1,6 +1,6 @@
 # journal-fit
 
-AI agent 投稿前期刊适配检查 skill：按目标期刊 Author Guidelines 和同刊范文，检查论文草稿是否适合投稿，并输出可复查的修改方向。
+AI agent 投稿前期刊定向审查 skill：按目标期刊 Author Guidelines 和同刊范文，检查论文草稿是否符合期刊要求和投稿惯例，并输出可复查的修改方向。它有审查能力，但边界是期刊要求和刊物惯例，不替代同行评审。
 
 > 中文为主，English version below.
 
@@ -21,14 +21,14 @@ export TAVILY_API_KEY="YOUR_API_KEY"
 
 ## 适用场景
 
-- 想按目标期刊要求做投稿前检查。
+- 想按目标期刊要求做投稿前审查。
 - 想区分“必须改”的格式问题和“建议优化”的风格偏离。
 - 想把摘要、引言、结论等章节和同刊同主题论文做对照。
 - 想让 AI agent 先收集证据、列出风险，再由作者自己修改。
 
 ## 它做什么
 
-> 它不是“帮你改论文”的工具，而是“帮你确认该往哪里改”的工具。小白用户不需要先理解检查类型；如果请求模糊，skill 会先按快速检查跑，再根据结果建议是否升级到完整投稿前检查或深度对标。
+> 它不是“帮你改论文”的工具，也不是替审稿人给录用判断的工具。更准确地说，它是“期刊定向的投稿前审查”：帮你确认草稿和目标期刊要求、刊物惯例差在哪里。小白用户不需要先理解检查类型；如果请求模糊，skill 会先按快速检查跑，再根据结果建议是否升级到完整投稿前审查或深度对标。
 
 - 抽取真实 Author Guidelines 中的字数、摘要、关键词、图表、参考文献和声明要求。
 - 解析 `.docx`、`.pdf`、`.md` 或 `.txt` 草稿中的相关特征。
@@ -39,6 +39,7 @@ export TAVILY_API_KEY="YOUR_API_KEY"
 ## 不做什么
 
 - 不代写、不生成替换段落、不预测录用概率。
+- 不模拟同行评审，不判断创新性是否足够录用。
 - 不用出版商通用默认值冒充期刊真实要求。
 - 不绕过付费墙、验证码、登录墙或机构权限。
 
@@ -63,7 +64,7 @@ export TAVILY_API_KEY="YOUR_API_KEY"
 在支持 skills / agent instructions 的 agent 里安装：
 
 ```text
-请从 GitHub 安装这个 skill，并在投稿前期刊适配检查时优先使用它：
+请从 GitHub 安装这个 skill，并在期刊定向投稿前审查时优先使用它：
 https://github.com/keros68/journal-fit
 ```
 
@@ -101,14 +102,14 @@ Released under the MIT License. Forks and redistributed copies should preserve t
 
 ## English
 
-journal-fit is an AI agent skill for pre-submission journal fit checks. It compares a manuscript draft with real Author Guidelines and same-journal examples, then reports evidence-backed revision directions.
+journal-fit is an AI agent skill for journal-specific pre-submission review. It compares a manuscript draft with real Author Guidelines and same-journal examples, then reports evidence-backed revision directions.
 
-It does not write replacement prose, predict acceptance, or bypass access restrictions.
+It does not write replacement prose, simulate peer review, predict acceptance, or bypass access restrictions.
 
 Quick start:
 
 ```text
-Install this skill from GitHub and use it for pre-submission journal fit checks:
+Install this skill from GitHub and use it for journal-specific pre-submission checks:
 https://github.com/keros68/journal-fit
 ```
 

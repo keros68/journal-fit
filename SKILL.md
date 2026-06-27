@@ -1,11 +1,11 @@
 ---
 name: journal-fit
-description: Use when aligning a manuscript draft with a target journal before submission, including Author Guidelines compliance, same-journal style benchmarking, section-specific diagnostics, and prioritized revision directions without drafting replacement prose.
+description: Use when running a journal-specific pre-submission review of a manuscript draft against a target journal, including Author Guidelines compliance, same-journal style benchmarking, section-specific diagnostics, and prioritized revision directions without drafting replacement prose or simulating peer review.
 ---
 
 # Journal Fit
 
-Diagnose whether a manuscript fits a target journal's requirements and conventions. The skill does two things only: check the draft and give revision directions. Do not draft replacement prose, rewrite sections, or create writing templates unless the user explicitly switches to a writing/polishing task.
+Run a journal-specific pre-submission review: diagnose whether a manuscript meets the target journal's Author Guidelines, submission requirements, and observable same-journal conventions. This is not peer-review simulation or an acceptance/rejection judgment. The skill does two things only: check the draft and give revision directions. Do not draft replacement prose, rewrite sections, or create writing templates unless the user explicitly switches to a writing/polishing task.
 
 ## Operating Rules
 
@@ -14,6 +14,7 @@ Diagnose whether a manuscript fits a target journal's requirements and conventio
 - Treat third-party guideline aggregators as fallback evidence only. Label the source and tell the user to verify current official requirements before submission.
 - Mark unsupported items as "unable to assess" rather than guessing.
 - Keep outputs diagnostic: issue, evidence, risk, and revision direction.
+- Do not simulate peer review, assign accept/reject decisions, or judge scientific contribution strength. Keep review claims tied to journal requirements, submission materials, and same-journal conventions.
 - If the user writes in Chinese, answer in Chinese unless they request another language.
 
 ## Start Here — Default To Quick Check
@@ -48,7 +49,7 @@ Use this mapping internally. Do not dump the table on novice users unless helpfu
 |---|---|---|
 | “会不会被编辑部/投稿系统退回” | Quick Check / Format compliance | Author Guidelines essentials only |
 | “准备正式投稿前帮我完整把关” | Submission readiness | Format compliance + selected same-journal benchmarks |
-| “像不像这个期刊会收” | Style alignment | Same-journal, same-topic benchmark |
+| “和这个期刊常见写法差多远” | Style alignment | Same-journal, same-topic benchmark |
 | “只看摘要/引言/结论” | Section-specific fit | One named section compared with exemplars |
 | “英语表达/语言风格像不像” | Language style | OA full-text language features, only when enough full text exists |
 
