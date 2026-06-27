@@ -1,0 +1,4 @@
+interface:
+  display_name: "Journal Fit"
+  short_description: "Check manuscript fit for target journals"
+  default_prompt: "Use $journal-fit to check my manuscript against a target journal before submission."

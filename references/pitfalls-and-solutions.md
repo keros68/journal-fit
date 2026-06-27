@@ -71,7 +71,7 @@ curl -s "https://api.semanticscholar.org/graph/v1/paper/DOI:{DOI}?fields=title,a
 
 ## 7. Tavily 配置与跨出版商效果（2026-06-27 实测，完整版）
 
-**Tavily API key 已配置**：写入 `~/.claude/settings.json` 的 `env.TAVILY_API_KEY`。extract skill 脚本和直接 curl 都能用。
+**Tavily API key 在测试环境中已配置**：通过环境变量 `TAVILY_API_KEY` 暴露给命令行。不要在 skill 中假设某个客户端配置文件（如 Claude、Hermes 或 Codex 的私有路径）一定存在。
 
 **跨出版商 Guidelines 抓取效果（6 家出版商完整测试）：**
 
@@ -86,7 +86,7 @@ curl -s "https://api.semanticscholar.org/graph/v1/paper/DOI:{DOI}?fields=title,a
 | ES&T | ACS | ❌ | ❌ | ✅ (manusights 22K) |
 | Arid Land Res. & Mgmt. | Taylor & Francis | ❌ | ❌ | ✅ (scispace 17K) |
 
-**三层 fallback 策略已写入 skill v3.2：**
+**三层 fallback 策略：**
 - Layer 1: Tavily extract → 覆盖 Elsevier/MDPI
 - Layer 2: Jina Reader（免费备选）→ 覆盖范围相同
 - Layer 3: Tavily search → 第三方聚合站（manusights.com/scispace.com）→ 覆盖 Wiley/ACS/T&F
@@ -98,7 +98,8 @@ curl -s "https://api.semanticscholar.org/graph/v1/paper/DOI:{DOI}?fields=title,a
 - Tavily 对 Elsevier/MDPI 系效果优秀
 - Springer/Nature 系 Tavily 能返回页面但正文提取不完整，需走 Layer 3
 - Wiley/ACS/T&F 被 Cloudflare 拦截，但 Layer 3 第三方聚合站全覆盖
-- **三层 fallback 可实现 6/6 出版商全自动获取，无需用户手动粘贴**
+- 在 2026-06-27 这批样本中，三层 fallback 覆盖了 6/6 出版商
+- 实际使用时仍需重新验证页面可抓取性，并区分官方来源、第三方聚合页和搜索摘要
 
 ## 8. 没有真实 Guidelines 时格式检查的危害（关键教训）
 
@@ -115,4 +116,4 @@ curl -s "https://api.semanticscholar.org/graph/v1/paper/DOI:{DOI}?fields=title,a
 
 这意味着上一轮模拟测试报告中的 P0/P1 建议有方向性错误。**没有真实 Guidelines 的格式检查不仅无用，而且有害——会产生误导性建议。**
 
-Skill v3.1 已在 Guidelines Checklist 部分加入"禁止猜测"规则和反例。
+当前 skill 应在 Guidelines Checklist 部分坚持"禁止猜测"规则，并保留这些反例作为检查红线。

@@ -1,6 +1,6 @@
 # Guidelines 自动获取方案矩阵
 
-基于 2026-06-27 跨出版商实测（6 家出版商 × 4 种抓取方案）。
+基于 2026-06-27 跨出版商实测（6 家出版商 × 4 种抓取方案）。这是一个 dated snapshot，用于选择 fallback 顺序；实际使用时仍需重新验证当前页面是否可抓取。
 
 ## 测试矩阵
 
@@ -66,10 +66,10 @@ curl -s -X POST "https://api.tavily.com/extract" \
 | manusights.com | ES&T (ACS) | 22K chars | 高：按稿件类型分列（Research Article 7000词/摘要150词等） |
 | scispace.com | Arid Land (T&F) | 17K chars | 中：格式要求摘要，不如 manusights 详细 |
 
-**Tavily search 的 AI answer 质量很高，可直接用：**
-- "GCB 正文上限15000词，摘要250词结构化（Aim/Location/Time Period/...），图表 ≥300 DPI"
-- "ES&T 摘要 ≤150 词，submission system 强制执行，需 TOC graphic"
-- "Arid Land 正文 ≤15000 词，摘要 ≤150 词"
+**Tavily search 的 AI answer 可作为检索线索，但不要作为唯一证据：**
+- 可用来定位关键词、第三方聚合页或官方说明入口
+- 数值型要求仍应尽量从官方页、抽取到的页面正文、或明确标注的第三方页面中复核
+- 若只能使用 AI answer，输出时必须标注低置信度和来源限制
 
 **风险：** 第三方数据可能滞后于官方。输出时标注数据来源。
 
@@ -94,7 +94,7 @@ curl -s -X POST "https://api.tavily.com/extract" \
 
 - Layer 1 单独覆盖率：3/6 出版商（Elsevier, MDPI, 部分 Springer）
 - Layer 1+2 覆盖率：不变（覆盖范围相同）
-- Layer 1+2+3 覆盖率：**6/6 出版商（100%）**
-- Layer 4 手动粘贴：理论兜底，实测中不需要
+- Layer 1+2+3：在这批样本中覆盖 **6/6 出版商**
+- Layer 4 手动粘贴：理论兜底；这批实测中未使用
 
-**结论：三层 fallback 可实现全自动 Guidelines 获取，无需用户手动粘贴。**
+**结论：三层 fallback 能显著提高自动获取成功率，但不是永久覆盖承诺。输出中必须标注来源类型；第三方或搜索摘要结果需要提醒用户投稿前复核官方最新 Guidelines。**
