@@ -31,7 +31,7 @@ curl -s -X POST "https://api.tavily.com/extract" \
 
 ### Layer 2: Built-in Markdown reader cascade（无需额外 skill）
 
-This layer copies only the lightweight URL-to-Markdown idea, not the full `qiaomu-markdown-proxy` dependency stack. Do not require users to install another skill.
+This layer is a lightweight URL-to-Markdown fallback built into `journal-fit`. Do not require users to install another skill.
 
 Try these in order:
 
