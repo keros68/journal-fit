@@ -23,10 +23,10 @@ Most users do not know which diagnostic scope they need. Do not force them to ch
 
 Vague requests include:
 
-- “帮我看看这篇能不能投这个期刊”
-- “投稿前帮我检查一下”
-- “看看哪里需要改”
-- “Check this against Journal X”
+- "帮我看看这篇能不能投这个期刊"
+- "投稿前帮我检查一下"
+- "看看哪里需要改"
+- "Check this against Journal X"
 
 Collect only the minimum missing inputs:
 
@@ -47,11 +47,11 @@ Use this mapping internally. Do not dump the table on novice users unless helpfu
 
 | User concern | Internal scope | Run |
 |---|---|---|
-| “会不会被编辑部/投稿系统退回” | Quick Check / Format compliance | Author Guidelines essentials only |
-| “准备正式投稿前帮我完整把关” | Submission readiness | Format compliance + selected same-journal benchmarks |
-| “和这个期刊常见写法差多远” | Style alignment | Same-journal, same-topic benchmark |
-| “只看摘要/引言/结论” | Section-specific fit | One named section compared with exemplars |
-| “英语表达/语言风格像不像” | Language style | OA full-text language features, only when enough full text exists |
+| "会不会被编辑部/投稿系统退回" | Quick Check / Format compliance | Author Guidelines essentials only |
+| "准备正式投稿前帮我完整把关" | Submission readiness | Format compliance + selected same-journal benchmarks |
+| "和这个期刊常见写法差多远" | Style alignment | Same-journal, same-topic benchmark |
+| "只看摘要/引言/结论" | Section-specific fit | One named section compared with exemplars |
+| "英语表达/语言风格像不像" | Language style | OA full-text language features, only when enough full text exists |
 
 ### Quick Check Defaults
 
@@ -82,17 +82,17 @@ Resolve journal identity first: title, ISSN, publisher, article type, and target
 
 For Author Guidelines, prefer sources in this order:
 
-1. Official journal or publisher Author Guidelines page.
+1. Firecrawl Scrape API (no API key required, free tier: 1000 requests/month). Works across Claude Code, Codex, Cursor, WorkBuddy, and any agent with HTTP access.
 2. Tavily extract for the official page, only when `TAVILY_API_KEY` is already available.
 3. Built-in Markdown reader cascade for the official page: try `https://r.jina.ai/{url}`, then `https://defuddle.md/{url}`, then `agent-fetch` only if it is already installed or available through `npx`.
 4. Search results or third-party aggregators that summarize guidelines.
 5. User-pasted guideline text.
 
-If automatic retrieval is needed, read `references/guidelines-fallback-matrix.md` for tested retrieval patterns and failure modes. Do not require users to install another skill for Markdown proxy behavior; use the lightweight reader cascade directly. Do not block the task on Tavily configuration.
+If automatic retrieval is needed, read `references/guidelines-fallback-matrix.md` for tested retrieval patterns and failure modes. Do not require users to install another skill for Markdown proxy behavior; use the lightweight reader cascade directly. Do not block the task on Tavily or Firecrawl configuration.
 
 Accept reader output only when it has substantial content and contains guideline signals such as `abstract`, `manuscript`, `word`, `figure`, `reference`, `submission`, or `author guidelines`. Reject security checks, cookie pages, access-denied pages, empty pages, and navigation-only fragments. If the page is only a hub with official subpage links, follow the relevant official links before falling back to third-party summaries.
 
-If `TAVILY_API_KEY` is absent and the official or reader page still returns only a security check, cookie page, empty page, or navigation fragment, do not stop immediately. Try available web search for official mirrors, publisher help pages, or third-party guideline summaries. If those are still weak, ask the user to paste the guideline text.
+If all automatic retrieval options fail (security check, cookie page, empty page, or navigation fragment), do not stop immediately. Try available web search for official mirrors, publisher help pages, or third-party guideline summaries. If those are still weak, ask the user to paste the guideline text.
 
 Extract only requirements supported by the retrieved text:
 
@@ -193,11 +193,12 @@ Do not include replacement sentences or rewritten paragraphs. If the user asks f
 
 - Do not infer STOTEN, Wiley, ACS, Springer, or Taylor & Francis requirements from publisher-wide defaults.
 - Do not use OpenAlex as an Author Guidelines search engine. Use it for journal identity, article metadata, and same-journal exemplar discovery.
-- Do not treat security-check, cookie-consent, access-denied, or near-empty reader output as guideline text. Try the built-in Markdown reader cascade before moving to third-party summaries.
+- Do not treat security-check, cookie-consent, access-denied, or near-empty reader output as guideline text. Try the full fallback chain before moving to third-party summaries.
 - Do not call a generic journal-information or LetPub-style skill unless it is installed and clearly relevant. If unavailable, skip nonessential metadata and continue with official or public sources.
-- Do not treat Tavily coverage or third-party aggregator coverage as guaranteed. Use the matrix as a dated test snapshot, not a current fact.
+- Do not treat Tavily, Firecrawl, or third-party aggregator coverage as guaranteed. Use the matrix as a dated test snapshot, not a current fact.
 - Do not use CrossRef `page` fields to estimate Elsevier article length; those fields may be article numbers.
 - Do not benchmark by ISSN alone. Always add topic keywords.
+- Do not consume the Firecrawl free tier on publishers that Tavily or the reader cascade can handle. Reserve Firecrawl for publishers where other tools fail (Wiley, ACS, Springer Nature).
 
 ## References
 
