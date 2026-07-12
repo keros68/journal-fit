@@ -120,7 +120,7 @@ curl -s "https://api.semanticscholar.org/graph/v1/paper/DOI:{DOI}?fields=title,a
 | 期刊 | 出版商 | 官方页 + Jina/reader 结果 | 处理规则 |
 |------|--------|--------------------------|----------|
 | Global Change Biology | Wiley | 只返回 security verification | 不要当作指南正文；改用 web search/第三方摘要，或让用户粘贴 |
-| Environmental Science & Technology | ACS | 只拿到入口页和 Author Guidelines 链接，正文不完整 | 继续追踪 ACS Author Guidelines 链接；证据不足时标为 Unknown |
+| Environmental Science & Technology | ACS | 只拿到入口页和 Author Guidelines 链接，正文不完整 | 继续追踪 ACS Author Guidelines 链接；证据不足时标为 Unable to assess |
 | Arid Land Research and Management | Taylor & Francis | 近似 cookie/空页 | 不要当作指南正文；优先 search/第三方摘要 |
 | Nature Climate Change | Springer Nature | 可拿到 submission guidelines 片段，但内容偏稀疏 | 只抽取明确出现的要求；缺失项不要猜 |
 
