@@ -6,10 +6,7 @@
 
 **问题：** curl 和 headless browser 都拿不到 `elsevier.com/.../guide-for-authors`，Cloudflare 返回 403/拦截页。ScienceDirect 也会拦 IP。
 
-**解决方案优先级：**
-1. Tavily extract API（需配置 TAVILY_API_KEY）— 能绕过 Cloudflare，最可靠
-2. Google Cache `cache:URL` 或搜索引擎快照 — 有时能拿到缓存版
-3. 降级：让用户复制粘贴 Guidelines 核心部分
+当前统一 fallback 顺序见 guidelines-fallback-matrix.md（Layer 1 = Firecrawl 无 Key 模式优先）。
 
 **注意：** 不要把"Elsevier 拦截"当硬性约束写死。这是环境相关的问题，Tavily 配好就能绕过。
 
@@ -86,11 +83,7 @@ curl -s "https://api.semanticscholar.org/graph/v1/paper/DOI:{DOI}?fields=title,a
 | ES&T | ACS | ❌ | ❌ | ✅ (manusights 22K) |
 | Arid Land Res. & Mgmt. | Taylor & Francis | ❌ | ❌ | ✅ (scispace 17K) |
 
-**三层 fallback 策略：**
-- Layer 1: Tavily extract → 覆盖 Elsevier/MDPI
-- Layer 2: Jina Reader（免费备选）→ 覆盖范围相同
-- Layer 3: Tavily search → 第三方聚合站（manusights.com/scispace.com）→ 覆盖 Wiley/ACS/T&F
-- Layer 4: 手动粘贴（兜底，实测中不需要）
+（此处曾记录三层 fallback 历史方案，已被 guidelines-fallback-matrix.md 的五层结构取代，以该文件为准。）
 
 **详细测试数据和 curl 命令见 `references/guidelines-fallback-matrix.md`。**
 

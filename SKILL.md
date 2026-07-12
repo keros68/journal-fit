@@ -1,6 +1,6 @@
 ---
 name: journal-fit
-description: Use when running a journal-specific pre-submission review of a manuscript draft against a target journal, including Author Guidelines compliance, same-journal style benchmarking, section-specific diagnostics, and prioritized revision directions without drafting replacement prose or simulating peer review.
+description: Use when a user needs a journal-specific pre-submission compliance review of a manuscript draft against a target journal's Author Guidelines and observed same-journal conventions. Not for drafting prose, simulating peer review, or predicting acceptance.
 ---
 
 # Journal Fit
@@ -16,6 +16,7 @@ Run a journal-specific pre-submission review: diagnose whether a manuscript meet
 - Keep outputs diagnostic: issue, evidence, risk, and revision direction.
 - Do not simulate peer review, assign accept/reject decisions, or judge scientific contribution strength. Keep review claims tied to journal requirements, submission materials, and same-journal conventions.
 - If the user writes in Chinese, answer in Chinese unless they request another language.
+- Do not attempt to bypass paywalls, CAPTCHAs, login walls, or institutional access. When blocked, fall back to search snippets, third-party summaries, or ask the user to paste the official text.
 
 ## Start Here — Default To Quick Check
 
@@ -119,6 +120,8 @@ Parse only the fields needed for the selected scope.
 
 Record counts and locations that support the diagnosis: abstract words, keyword count, section headings, figure/table counts, reference count, statement presence, and section-level lengths.
 
+Done when: word/keyword/reference counts and section headings are recorded for the selected scope.
+
 ### 3. Same-Journal Benchmarking
 
 Use this only for style alignment, language style, section-specific fit, or full submission readiness. Do not run full benchmarking during Quick Check unless the user explicitly asks for it or the Quick Check reveals a specific need.
@@ -135,19 +138,21 @@ Summarize benchmarks with median and IQR. Do not rely on mean plus standard devi
 
 For language-style checks, require enough full text to support the claim. If fewer than 3 OA full texts are usable, label the result as insufficient rather than making a style recommendation.
 
+Done when: at least 3 same-journal exemplars are compared on the selected soft conventions, or the shortfall is reported.
+
 ## Diagnostics
 
 ### Format Compliance
 
 Only produce hard compliance findings when the requirement came from real guideline text.
 
-Treat official guideline text and user-pasted official text as eligible for confirmed P0 findings. Treat third-party aggregators and search snippets as fallback evidence only: label them clearly, use them for tentative direction, and mark the item Unknown or "needs official verification" before submission.
+Treat official guideline text and user-pasted official text as eligible for confirmed P0 findings. Treat third-party aggregators and search snippets as fallback evidence only: label them clearly, use them for tentative direction, and mark the item Unable to assess or "needs official verification" before submission.
 
 | Status | Meaning |
 |---|---|
 | P0 | Must fix: confirmed journal requirement is unmet |
 | Pass | Confirmed compliant |
-| Unknown | Requirement could not be verified from available evidence |
+| Unable to assess | Requirement could not be verified from available evidence |
 
 ### Style Alignment
 
@@ -158,7 +163,7 @@ Use benchmarks for soft conventions, not hard rules.
 | P1 | Strong recommendation: draft is clearly outside the benchmark and evidence confidence is high |
 | P2 | Optional optimization: mild deviation or low-confidence evidence |
 | Pass | Draft is within the observed journal convention |
-| Unknown | Benchmark data is too thin |
+| Unable to assess | Benchmark data is too thin |
 
 ## Output Format
 
@@ -191,12 +196,12 @@ Do not include replacement sentences or rewritten paragraphs. If the user asks f
 
 ## Common Pitfalls
 
-- Do not infer STOTEN, Wiley, ACS, Springer, or Taylor & Francis requirements from publisher-wide defaults.
+- Do not infer STOTEN, Wiley, ACS, Springer, or Taylor & Francis requirements from publisher-wide defaults. Mark the item as Unable to assess and request the official page or user-pasted text instead.
 - Do not use OpenAlex as an Author Guidelines search engine. Use it for journal identity, article metadata, and same-journal exemplar discovery.
 - Do not treat security-check, cookie-consent, access-denied, or near-empty reader output as guideline text. Try the full fallback chain before moving to third-party summaries.
 - Do not call a generic journal-information or LetPub-style skill unless it is installed and clearly relevant. If unavailable, skip nonessential metadata and continue with official or public sources.
 - Do not treat Tavily, Firecrawl, or third-party aggregator coverage as guaranteed. Use the matrix as a dated test snapshot, not a current fact.
-- Do not use CrossRef `page` fields to estimate Elsevier article length; those fields may be article numbers.
+- Do not use CrossRef `page` fields to estimate Elsevier article length; those fields may be article numbers. Use OA full-text PDF parsing for length signals when needed.
 - Do not benchmark by ISSN alone. Always add topic keywords.
 - Do not consume the Firecrawl free tier on publishers that Tavily or the reader cascade can handle. Reserve Firecrawl for publishers where other tools fail (Wiley, ACS, Springer Nature).
 
