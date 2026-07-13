@@ -16,7 +16,7 @@ Run a journal-specific pre-submission review: diagnose whether a manuscript meet
 - Keep outputs diagnostic: issue, evidence, risk, and revision direction.
 - Do not simulate peer review, assign accept/reject decisions, or judge scientific contribution strength. Keep review claims tied to journal requirements, submission materials, and same-journal conventions.
 - If the user writes in Chinese, answer in Chinese unless they request another language.
-- Do not attempt to bypass paywalls, CAPTCHAs, login walls, or institutional access. When blocked, fall back to search snippets, third-party summaries, or ask the user to paste the official text.
+- Do not attempt to bypass paywalls, CAPTCHAs, login walls, or institutional access. When blocked, continue down the fallback order in `references/guidelines-fallback-matrix.md` (readers and proxies before search snippets and third-party summaries), and only then ask the user to paste the official text.
 
 ## Start Here — Default To Quick Check
 
@@ -120,7 +120,7 @@ Parse only the fields needed for the selected scope.
 
 Record counts and locations that support the diagnosis: abstract words, keyword count, section headings, figure/table counts, reference count, statement presence, and section-level lengths.
 
-Done when: word/keyword/reference counts and section headings are recorded for the selected scope.
+Done when: word/keyword/reference counts, section headings, and required-statement presence are recorded for the selected scope.
 
 ### 3. Same-Journal Benchmarking
 
@@ -138,7 +138,7 @@ Summarize benchmarks with median and IQR. Do not rely on mean plus standard devi
 
 For language-style checks, require enough full text to support the claim. If fewer than 3 OA full texts are usable, label the result as insufficient rather than making a style recommendation.
 
-Done when: at least 3 same-journal exemplars are compared on the selected soft conventions, or the shortfall is reported.
+Done when: at least 3 same-journal exemplars are compared on the selected soft conventions (report low confidence whenever fewer than 5), or the shortfall is reported.
 
 ## Diagnostics
 
