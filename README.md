@@ -1,5 +1,9 @@
 # journal-fit
 
+> **📦 本项目已并入 [sci-select](https://github.com/keros68/sci-select)。**
+>
+> 投稿前定向审查能力现在是 sci-select 的一个内置模式（`references/presubmission-review.md`），与选刊、期刊指标查询共用一个入口。本仓库已归档，内容保留供参考，后续更新请移步 sci-select。
+
 AI agent 投稿前期刊定向审查 skill：按目标期刊 Author Guidelines 和同刊范文，检查论文草稿是否符合期刊要求和投稿惯例，并输出可复查的修改方向。它有审查能力，但边界是期刊要求和刊物惯例，不替代同行评审。
 
 > 中文为主，English version below.
