@@ -1,6 +1,6 @@
 # journal-fit
 
-> **📦 本项目已并入 [sci-select](https://github.com/keros68/sci-select)。**
+> **📦 本项目已并入 [xiaoyu-skill 中的 sci-select](https://github.com/keros68/xiaoyu-skill/tree/main/skills/sci-select)。**
 >
 > 投稿前定向审查能力现在是 sci-select 的一个内置模式（`references/presubmission-review.md`），与选刊、期刊指标查询共用一个入口。本仓库已归档，内容保留供参考，后续更新请移步 sci-select。
 
